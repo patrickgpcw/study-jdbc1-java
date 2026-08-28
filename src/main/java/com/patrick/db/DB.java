@@ -3,6 +3,9 @@ package com.patrick.db;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Properties;
 
 public class DB {
@@ -47,6 +50,31 @@ public class DB {
 
         } catch (SQLException e) {
             throw new DbException("Error when querying departments :", e);
+        } finally {
+            closeConnection();
+        }
+    }
+
+    public static void insertNewSeller() {
+        String sql = "INSERT INTO seller"
+                + "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
+                + "VALUES "
+                + "(?, ?, ?, ?, ?)";
+
+        try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
+
+            ps.setString(1, "Carl Purple");
+            ps.setString(2, "carl@gmail.com");
+            ps.setDate(3, Date.valueOf(LocalDate.of(1985, 12, 11)));
+            ps.setDouble(4, 3000.0);
+            ps.setInt(5, 4);
+
+            int rowsAffected = ps.executeUpdate();
+
+            System.out.println("Done! Rows affected: " + rowsAffected);
+
+        } catch (SQLException e) {
+            throw new DbException("Error inserting new seller", e);
         } finally {
             closeConnection();
         }
