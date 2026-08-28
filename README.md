@@ -89,6 +89,18 @@ Nesta aula, foi implementada uma consulta à tabela `department` para praticar:
 - fechamento automático de `Statement` e `ResultSet` com `try-with-resources`;
 - tratamento de exceções do JDBC.
 
+### Inserindo dados
+
+Nesta aula, foi implementada a inserção de um novo registro na tabela `seller` para praticar:
+
+- criação de comandos parametrizados com `PreparedStatement`;
+- associação de valores aos parâmetros utilizando os métodos `setString()`, `setDate()`, `setDouble()` e `setInt()`;
+- conversão e envio de datas para o banco de dados;
+- execução de comandos de inserção com `executeUpdate()`;
+- verificação da quantidade de linhas afetadas pela operação;
+- fechamento automático do `PreparedStatement` com `try-with-resources`;
+- tratamento de exceções durante a inserção.
+
 ## Objetivos de estudo
 
 Ao longo do projeto serão explorados assuntos como:
