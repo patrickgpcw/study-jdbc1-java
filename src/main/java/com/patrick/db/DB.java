@@ -2,9 +2,7 @@ package com.patrick.db;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Properties;
 
 public class DB {
@@ -18,7 +16,7 @@ public class DB {
                 String url = props.getProperty("dbUrl");
                 conn = DriverManager.getConnection(url, props);
             } catch (SQLException e) {
-                throw new DbExecption(e.getMessage());
+                throw new DbException("Error opening database connection: ", e);
             }
         }
         return conn;
@@ -29,21 +27,41 @@ public class DB {
             try {
                 conn.close();
             } catch (SQLException e) {
-                throw new DbExecption(e.getMessage());
+                throw new DbException("Error opening database connection: ", e);
+            } finally {
+                conn = null;
             }
+        }
+    }
+
+    public static void printDepartmentTable() {
+        String sql = "SELECT * FROM  department";
+
+        try (
+                Statement st = getConnection().createStatement();
+                ResultSet rs = st.executeQuery(sql)
+        ) {
+            while (rs.next()) {
+                System.out.println(rs.getInt("Id") + ", " + rs.getString("Name"));
+            }
+
+        } catch (SQLException e) {
+            throw new DbException("Error when querying departments :", e);
+        } finally {
+            closeConnection();
         }
     }
 
     private static Properties loadProperties() {
 
-        try (FileInputStream fs = new FileInputStream("db.properties")){
+        try (FileInputStream fs = new FileInputStream("db.properties")) {
 
             Properties props = new Properties();
             props.load(fs);
             return props;
 
         } catch (IOException e) {
-            throw new DbExecption(e.getMessage());
+            throw new DbException("Error to load properties file: ", e);
         }
     }
 }

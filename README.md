@@ -76,6 +76,19 @@ Os dados permanecem armazenados no volume Docker. Para remover também o volume 
 docker compose down -v
 ```
 
+## Aulas
+
+### Recuperando dados
+
+Nesta aula, foi implementada uma consulta à tabela `department` para praticar:
+
+- criação e execução de consultas com `Statement`;
+- recuperação dos resultados com `ResultSet`;
+- navegação pelos registros utilizando `next()`;
+- leitura das colunas com `getInt()` e `getString()`;
+- fechamento automático de `Statement` e `ResultSet` com `try-with-resources`;
+- tratamento de exceções do JDBC.
+
 ## Objetivos de estudo
 
 Ao longo do projeto serão explorados assuntos como:
