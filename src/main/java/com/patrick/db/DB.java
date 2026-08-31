@@ -3,8 +3,6 @@ package com.patrick.db;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Properties;
 
@@ -75,6 +73,24 @@ public class DB {
 
         } catch (SQLException e) {
             throw new DbException("Error inserting new seller", e);
+        } finally {
+            closeConnection();
+        }
+    }
+
+    public static void updateBaseSalarySeller() {
+        String sql = "UPDATE seller "
+                + "SET baseSalary = baseSalary + ? "
+                + "WHERE "
+                + "(DepartmentId = ?) ";
+
+        try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
+            ps.setDouble(1, 1000.0);
+            ps.setInt(2, 4);
+            int rowsAffected = ps.executeUpdate();
+            System.out.println("Rows affected: " + rowsAffected);
+        } catch (SQLException e) {
+            throw new DbException("Error updating sellers' base salary", e);
         } finally {
             closeConnection();
         }

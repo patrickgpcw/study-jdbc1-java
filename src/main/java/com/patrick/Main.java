@@ -6,6 +6,7 @@ public class Main {
     public static void main(String[] args) {
 
 //        DB.printDepartmentTable();
-        DB.insertNewSeller();
+//        DB.insertNewSeller();
+        DB.updateBaseSalarySeller();
     }
 }
