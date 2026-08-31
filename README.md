@@ -140,6 +140,31 @@ WHERE Id = 5;
 
 Se o departamento estiver associado a registros de outras tabelas, como `seller`, o banco impedirá a exclusão e a aplicação lançará uma `DbIntegrityException`.
 
+### Transações
+
+Nesta aula, foi implementada uma transação para atualizar o salário-base dos vendedores de dois departamentos. O método `transactionBaseSalaryFromSeller()` permite praticar:
+
+- desativação do commit automático com `setAutoCommit(false)`;
+- execução de múltiplas operações como uma única unidade de trabalho;
+- confirmação das alterações com `commit()`;
+- cancelamento de todas as alterações com `rollback()` quando ocorre um erro;
+- tratamento de uma possível `SQLException` durante o próprio rollback;
+- fechamento automático do `Statement` com `try-with-resources`.
+
+Durante a transação, são executados dois comandos equivalentes a:
+
+```sql
+UPDATE seller
+SET BaseSalary = 2090
+WHERE DepartmentId = 1;
+
+UPDATE seller
+SET BaseSalary = 3090
+WHERE DepartmentId = 2;
+```
+
+Com o auto-commit desativado, as atualizações somente são confirmadas no banco após a chamada de `commit()`. Para testar o rollback, o método contém um trecho comentado que pode lançar uma `SQLException` entre as duas atualizações. Nesse cenário, o segundo comando não é executado e o `rollback()` desfaz a primeira atualização, preservando a consistência dos dados.
+
 ## Objetivos de estudo
 
 Ao longo do projeto serão explorados assuntos como:

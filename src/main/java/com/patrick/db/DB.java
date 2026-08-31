@@ -86,7 +86,7 @@ public class DB {
         try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
             ps.setString(1, "D1");
             ps.executeUpdate();
-        } catch (SQLException e){
+        } catch (SQLException e) {
             throw new DbException("Error inserting new department: ", e);
         }
 
@@ -115,7 +115,7 @@ public class DB {
                 + "WHERE "
                 + "(Id = ?)";
 
-        try (PreparedStatement ps = getConnection().prepareStatement(sql)){
+        try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
             ps.setInt(1, 5);
             ps.executeUpdate();
 
@@ -126,16 +126,43 @@ public class DB {
         }
     }
 
-    private static Properties loadProperties() {
+    public static void transactionBaseSalaryFromSeller() {
+        try (Statement s = getConnection().createStatement()) {
 
-        try (FileInputStream fs = new FileInputStream("db.properties")) {
+            conn.setAutoCommit(false);
 
-            Properties props = new Properties();
-            props.load(fs);
-            return props;
+            int rows1 = s.executeUpdate("UPDATE seller SET BaseSalary = 2090 WHERE DepartmentId = 1");
 
-        } catch (IOException e) {
-            throw new DbException("Error to load properties file: ", e);
+//            if (true) {
+//                throw new SQLException("Fake Error");
+//            }
+
+            int rows2 = s.executeUpdate("UPDATE seller SET BaseSalary = 3090 WHERE DepartmentId = 2");
+
+            conn.commit();
+            System.out.println("rows1 = " + rows1);
+            System.out.println("rows2 = " + rows2);
+
+        } catch (SQLException e) {
+            try {
+                conn.rollback();
+                throw new DbException("Transaction rolled back! Caused by: ", e);
+            } catch (SQLException e1) {
+                throw new DbException("Error trying to rollback! ", e1);
+            }
         }
     }
-}
+
+        private static Properties loadProperties () {
+
+            try (FileInputStream fs = new FileInputStream("db.properties")) {
+
+                Properties props = new Properties();
+                props.load(fs);
+                return props;
+
+            } catch (IOException e) {
+                throw new DbException("Error to load properties file: ", e);
+            }
+        }
+    }
