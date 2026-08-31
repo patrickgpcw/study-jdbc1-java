@@ -91,7 +91,7 @@ Nesta aula, foi implementada uma consulta à tabela `department` para praticar:
 
 ### Inserindo dados
 
-Nesta aula, foi implementada a inserção de um novo registro na tabela `seller` para praticar:
+Nesta aula, foram implementadas inserções nas tabelas `seller` e `department` para praticar:
 
 - criação de comandos parametrizados com `PreparedStatement`;
 - associação de valores aos parâmetros utilizando os métodos `setString()`, `setDate()`, `setDouble()` e `setInt()`;
@@ -103,24 +103,42 @@ Nesta aula, foi implementada a inserção de um novo registro na tabela `seller`
 
 ### Atualizando dados
 
-Nesta aula, foi implementada a atualização do salário-base dos vendedores de um departamento para praticar:
+Nesta aula, foi implementada a atualização do salário-base de um vendedor para praticar:
 
 - criação de um comando `UPDATE` parametrizado com `PreparedStatement`;
-- associação do valor do reajuste e do identificador do departamento com `setDouble()` e `setInt()`;
+- associação do valor do reajuste e do nome do vendedor com `setDouble()` e `setString()`;
 - execução da atualização com `executeUpdate()`;
 - verificação da quantidade de linhas afetadas;
 - fechamento automático do `PreparedStatement` com `try-with-resources`;
 - fechamento da conexão e tratamento de exceções durante a atualização.
 
-O método `updateBaseSalarySeller()` acrescenta `1000.0` ao salário-base de todos os vendedores que pertencem ao departamento de ID `4`. O comando executado equivale a:
+O método `updateBaseSalarySeller()` acrescenta `9.0` ao salário-base do vendedor chamado `Flavinha Pessanha`. O comando executado equivale a:
 
 ```sql
 UPDATE seller
-SET BaseSalary = BaseSalary + 1000.0
-WHERE DepartmentId = 4;
+SET BaseSalary = BaseSalary + 9.0
+WHERE Name = 'Flavinha Pessanha';
 ```
 
-Como o reajuste é somado ao valor atual, cada nova execução do método acrescenta outros `1000.0` aos salários selecionados.
+Como o reajuste é somado ao valor atual, cada nova execução do método acrescenta outros `9.0` ao salário dos vendedores selecionados.
+
+### Excluindo dados
+
+Nesta aula, foi implementada a exclusão de um departamento específico para praticar:
+
+- criação de um comando `DELETE` parametrizado com `PreparedStatement`;
+- associação do identificador do departamento com `setInt()`;
+- execução da exclusão com `executeUpdate()`;
+- tratamento de violações de integridade referencial com `DbIntegrityException`.
+
+O método `removeDepartment()` tenta remover o departamento de ID `5`. O comando executado equivale a:
+
+```sql
+DELETE FROM department
+WHERE Id = 5;
+```
+
+Se o departamento estiver associado a registros de outras tabelas, como `seller`, o banco impedirá a exclusão e a aplicação lançará uma `DbIntegrityException`.
 
 ## Objetivos de estudo
 

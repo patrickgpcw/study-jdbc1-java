@@ -7,6 +7,8 @@ public class Main {
 
 //        DB.printDepartmentTable();
 //        DB.insertNewSeller();
-        DB.updateBaseSalarySeller();
+//        DB.updateBaseSalarySeller();
+//        DB.insetNewDepartment();
+        DB.removeDepartment();
     }
 }

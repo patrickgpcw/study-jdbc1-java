@@ -61,10 +61,10 @@ public class DB {
 
         try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
 
-            ps.setString(1, "Carl Purple");
-            ps.setString(2, "carl@gmail.com");
-            ps.setDate(3, Date.valueOf(LocalDate.of(1985, 12, 11)));
-            ps.setDouble(4, 3000.0);
+            ps.setString(1, "Flavinha Pessanha");
+            ps.setString(2, "flavinha@pessanha.com");
+            ps.setDate(3, Date.valueOf(LocalDate.of(1990, 02, 01)));
+            ps.setDouble(4, 1000000.0);
             ps.setInt(5, 4);
 
             int rowsAffected = ps.executeUpdate();
@@ -78,19 +78,49 @@ public class DB {
         }
     }
 
+    public static void insetNewDepartment() {
+        String sql = "INSERT INTO department "
+                + "(Name)"
+                + "VALUES(?)";
+
+        try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
+            ps.setString(1, "D1");
+            ps.executeUpdate();
+        } catch (SQLException e){
+            throw new DbException("Error inserting new department: ", e);
+        }
+
+    }
+
     public static void updateBaseSalarySeller() {
         String sql = "UPDATE seller "
                 + "SET baseSalary = baseSalary + ? "
                 + "WHERE "
-                + "(DepartmentId = ?) ";
+                + "(Name = ?) ";
 
         try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
-            ps.setDouble(1, 1000.0);
-            ps.setInt(2, 4);
+            ps.setDouble(1, 9);
+            ps.setString(2, "Flavinha Pessanha");
             int rowsAffected = ps.executeUpdate();
             System.out.println("Rows affected: " + rowsAffected);
         } catch (SQLException e) {
             throw new DbException("Error updating sellers' base salary", e);
+        } finally {
+            closeConnection();
+        }
+    }
+
+    public static void removeDepartment() {
+        String sql = "DELETE FROM department "
+                + "WHERE "
+                + "(Id = ?)";
+
+        try (PreparedStatement ps = getConnection().prepareStatement(sql)){
+            ps.setInt(1, 5);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DbIntegrityException(e.getMessage());
         } finally {
             closeConnection();
         }
