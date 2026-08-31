@@ -101,6 +101,27 @@ Nesta aula, foi implementada a inserção de um novo registro na tabela `seller`
 - fechamento automático do `PreparedStatement` com `try-with-resources`;
 - tratamento de exceções durante a inserção.
 
+### Atualizando dados
+
+Nesta aula, foi implementada a atualização do salário-base dos vendedores de um departamento para praticar:
+
+- criação de um comando `UPDATE` parametrizado com `PreparedStatement`;
+- associação do valor do reajuste e do identificador do departamento com `setDouble()` e `setInt()`;
+- execução da atualização com `executeUpdate()`;
+- verificação da quantidade de linhas afetadas;
+- fechamento automático do `PreparedStatement` com `try-with-resources`;
+- fechamento da conexão e tratamento de exceções durante a atualização.
+
+O método `updateBaseSalarySeller()` acrescenta `1000.0` ao salário-base de todos os vendedores que pertencem ao departamento de ID `4`. O comando executado equivale a:
+
+```sql
+UPDATE seller
+SET BaseSalary = BaseSalary + 1000.0
+WHERE DepartmentId = 4;
+```
+
+Como o reajuste é somado ao valor atual, cada nova execução do método acrescenta outros `1000.0` aos salários selecionados.
+
 ## Objetivos de estudo
 
 Ao longo do projeto serão explorados assuntos como:
