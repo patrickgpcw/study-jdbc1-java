@@ -9,6 +9,7 @@ public class Main {
 //        DB.insertNewSeller();
 //        DB.updateBaseSalarySeller();
 //        DB.insetNewDepartment();
-        DB.removeDepartment();
+//        DB.removeDepartment();
+        DB.transactionBaseSalaryFromSeller();
     }
 }
