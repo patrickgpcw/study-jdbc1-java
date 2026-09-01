@@ -9,6 +9,8 @@ public class Main {
 
         SellerDao sellerDao = FactoryDao.createSellerDao();
 
+
+        System.out.println("=== TEST 1: seller findById ===");
         Seller s = sellerDao.findById(8);
 
         System.out.println(s);
