@@ -6,7 +6,10 @@ import com.patrick.model.entities.Department;
 import com.patrick.model.entities.Seller;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SellerDaoJDBC implements SellerDao {
 
@@ -76,8 +79,6 @@ public class SellerDaoJDBC implements SellerDao {
         } catch (SQLException e) {
             throw new DbException("Error trying delete seller:", e);
         }
-
-
     }
 
     @Override
@@ -119,7 +120,30 @@ public class SellerDaoJDBC implements SellerDao {
 
     @Override
     public List<Seller> findAll() {
+        String sql = "SELECT seller.*,department.Name as DepName "
+                + "FROM seller INNER JOIN department "
+                + "ON seller.DepartmentId = department.Id "
+                + "ORDER BY Name";
 
-        return List.of();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            List<Seller> list = new ArrayList<>();
+            Map<Integer, Department> map = new HashMap<>();
+
+            while (rs.next()) {
+                Department dep = map.get(rs.getInt("DepartmentId"));
+
+                if (dep == null) {
+                    dep = instantiateDepartment(rs);
+                    map.put(rs.getInt("DepartmentId"), dep);
+                }
+
+                Seller s = instantiateSeller(rs, dep);
+                list.add(s);
+            }
+            return list;
+        } catch (SQLException e) {
+            throw new DbException("Error to findAll sellers:", e);
+        }
     }
 }
