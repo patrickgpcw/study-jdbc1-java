@@ -1,7 +1,6 @@
 package com.patrick.model.impl;
 
 import com.patrick.db.DbException;
-import com.patrick.model.dao.DepartmentDao;
 import com.patrick.model.dao.SellerDao;
 import com.patrick.model.entities.Department;
 import com.patrick.model.entities.Seller;
@@ -31,6 +30,17 @@ public class SellerDaoJDBC implements SellerDao {
 
     @Override
     public void delete(Integer id) {
+        String sql = "DELETE FROM seller "
+                + "WHERE "
+                + "(Id = ?)";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbException("Error trying delete seller:", e);
+        }
+
 
     }
 
