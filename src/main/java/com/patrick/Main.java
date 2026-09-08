@@ -46,8 +46,11 @@ public class Main {
 //        System.out.println("=== TEST 6: department insert ===");
 //        departmentDao.insert(department);
 
-        System.out.println("=== TEST 7: department update ===");
-        departmentDao.update(department);
+//        System.out.println("=== TEST 7: department update ===");
+//        departmentDao.update(department);
+
+        System.out.println("=== TEST 8: department delete ===");
+        departmentDao.delete(department.getId());
 
 
     }
