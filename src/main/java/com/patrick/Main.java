@@ -32,8 +32,14 @@ public class Main {
 //        sellerDao.insert(seller);
 //        System.out.println( "The seller " + seller.getName() + " was inserted!");
 
-        System.out.println("=== TEST 4: seller findById ===");
-        List<Seller> sellers = sellerDao.findAll();
+//        System.out.println("=== TEST 4: seller findById ===");
+//        List<Seller> sellers = sellerDao.findAll();
+//        for (Seller s : sellers) {
+//            System.out.println(s);
+//        }
+
+        System.out.println("=== TEST 5: seller findByDepartment ===");
+        List<Seller> sellers = sellerDao.findByDepartment(department);
         for (Seller s : sellers) {
             System.out.println(s);
         }
