@@ -1,5 +1,6 @@
 package com.patrick;
 
+import com.patrick.model.dao.DepartmentDao;
 import com.patrick.model.dao.FactoryDao;
 import com.patrick.model.dao.SellerDao;
 import com.patrick.model.entities.Department;
@@ -12,14 +13,15 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        SellerDao sellerDao = FactoryDao.createSellerDao();
-        Department department = new Department(1, "Computers");
-        Seller seller = new Seller(9,
-                "Patrick Pessanha",
-                "patrick.pessanha@gmail.com",
-                Date.valueOf(LocalDate.of(1995, 12, 27)),
-                5000.0,
-                department);
+//        SellerDao sellerDao = FactoryDao.createSellerDao();
+        DepartmentDao departmentDao = FactoryDao.createDepartmentDao();
+        Department department = new Department(null, "Games");
+//        Seller seller = new Seller(9,
+//                "Patrick Pessanha",
+//                "patrick.pessanha@gmail.com",
+//                Date.valueOf(LocalDate.of(1995, 12, 27)),
+//                5000.0,
+//                department);
 
 //        System.out.println("=== TEST 1: seller findById ===");
 //        Seller s = sellerDao.findById(8);
@@ -38,10 +40,13 @@ public class Main {
 //            System.out.println(s);
 //        }
 
-        System.out.println("=== TEST 5: seller findByDepartment ===");
-        List<Seller> sellers = sellerDao.findByDepartment(department);
-        for (Seller s : sellers) {
-            System.out.println(s);
-        }
+//        System.out.println("=== TEST 5: seller findByDepartment ===");
+//        List<Seller> sellers = sellerDao.findByDepartment(department);
+//        for (Seller s : sellers) {
+//            System.out.println(s);
+//        }
+        System.out.println("=== TEST 6: department insert ===");
+        departmentDao.insert(department);
+
     }
 }
