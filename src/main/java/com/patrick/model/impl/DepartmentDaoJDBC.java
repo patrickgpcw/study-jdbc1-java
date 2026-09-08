@@ -3,8 +3,6 @@ package com.patrick.model.impl;
 import com.patrick.db.DbException;
 import com.patrick.model.dao.DepartmentDao;
 import com.patrick.model.entities.Department;
-
-import java.lang.reflect.GenericArrayType;
 import java.sql.*;
 import java.util.List;
 
@@ -22,6 +20,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
                 + "(Name) "
                 + "VALUE "
                 + "(?)";
+
         try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, d.getName());
             int rowAffects = ps.executeUpdate();
@@ -40,7 +39,18 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
     @Override
     public void update(Department d) {
+        String sql = "UPDATE department "
+                + "SET Name = ? "
+                + "WHERE Id = ?";
 
+        try (PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setString(1, d.getName());
+            ps.setInt(2, d.getId());
+            ps.executeUpdate();
+            System.out.println("Department updated!");
+        } catch (SQLException e) {
+            throw new DbException("Error to update department:", e);
+        }
     }
 
     @Override

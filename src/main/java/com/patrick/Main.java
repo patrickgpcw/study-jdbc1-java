@@ -2,9 +2,7 @@ package com.patrick;
 
 import com.patrick.model.dao.DepartmentDao;
 import com.patrick.model.dao.FactoryDao;
-import com.patrick.model.dao.SellerDao;
 import com.patrick.model.entities.Department;
-import com.patrick.model.entities.Seller;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -15,7 +13,7 @@ public class Main {
 
 //        SellerDao sellerDao = FactoryDao.createSellerDao();
         DepartmentDao departmentDao = FactoryDao.createDepartmentDao();
-        Department department = new Department(null, "Games");
+        Department department = new Department(6, "Foods");
 //        Seller seller = new Seller(9,
 //                "Patrick Pessanha",
 //                "patrick.pessanha@gmail.com",
@@ -45,8 +43,12 @@ public class Main {
 //        for (Seller s : sellers) {
 //            System.out.println(s);
 //        }
-        System.out.println("=== TEST 6: department insert ===");
-        departmentDao.insert(department);
+//        System.out.println("=== TEST 6: department insert ===");
+//        departmentDao.insert(department);
+
+        System.out.println("=== TEST 7: department update ===");
+        departmentDao.update(department);
+
 
     }
 }
