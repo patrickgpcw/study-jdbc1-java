@@ -15,6 +15,7 @@ public class SellerDaoJDBC implements SellerDao {
     public SellerDaoJDBC(Connection conn) {
         this.conn = conn;
     }
+
     @Override
     public void insert(Seller seller) {
         String sql = "INSERT INTO seller"
@@ -22,14 +23,14 @@ public class SellerDaoJDBC implements SellerDao {
                 + "VALUE "
                 + "(?,?,?,?,?)";
 
-        try(PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, seller.getName());
             ps.setString(2, seller.getEmail());
             ps.setDate(3, new Date(seller.getBirthDate().getTime()));
             ps.setDouble(4, seller.getBaseSalary());
             ps.setInt(5, seller.getDepartment().getId());
             int rowAffects = ps.executeUpdate();
-            if (rowAffects>0) {
+            if (rowAffects > 0) {
                 ResultSet rs = ps.getGeneratedKeys();
                 if (rs.next()) {
                     int id = rs.getInt(1);
@@ -44,6 +45,22 @@ public class SellerDaoJDBC implements SellerDao {
 
     @Override
     public void update(Seller seller) {
+        String sql = "UPDATE seller "
+                + "SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? "
+                + "WHERE Id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, seller.getName());
+            ps.setString(2, seller.getEmail());
+            ps.setDate(3, new Date(seller.getBirthDate().getTime()));
+            ps.setDouble(4, seller.getBaseSalary());
+            ps.setInt(5, seller.getDepartment().getId());
+            ps.setInt(6, seller.getId());
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DbException("Error to update seller: ", e);
+        }
 
     }
 
@@ -53,7 +70,7 @@ public class SellerDaoJDBC implements SellerDao {
                 + "WHERE "
                 + "(Id = ?)";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)){
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -73,7 +90,7 @@ public class SellerDaoJDBC implements SellerDao {
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 Department dp = instantiateDepartment(rs);
                 return instantiateSeller(rs, dp);
             }
@@ -90,7 +107,7 @@ public class SellerDaoJDBC implements SellerDao {
         return dp;
     }
 
-    private Seller instantiateSeller (ResultSet rs, Department dp) throws SQLException {
+    private Seller instantiateSeller(ResultSet rs, Department dp) throws SQLException {
         Seller s = new Seller();
         s.setName(rs.getString("Name"));
         s.setEmail(rs.getString("Email"));

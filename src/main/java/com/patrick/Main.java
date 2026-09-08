@@ -12,28 +12,30 @@ public class Main {
     public static void main(String[] args) {
 
 
-        System.out.println("=== TEST 3: seller insert ===");
+        SellerDao sellerDao = FactoryDao.createSellerDao();
         Department department = new Department(1, "Computers");
-        Seller seller = new Seller(null,
-                "Marcelo Junior",
-                "marcelo@junior.com",
+        Seller seller = new Seller(9,
+                "Patrick Pessanha",
+                "patrick.pessanha@gmail.com",
                 Date.valueOf(LocalDate.of(1995, 12, 27)),
-                3000.0,
+                5000.0,
                 department);
 
-        SellerDao sellerDao = FactoryDao.createSellerDao();
-        sellerDao.insert(seller);
-
-        System.out.println( "The seller " +seller.getName() + " was inserted!");
-
+        sellerDao.update(seller);
 
 
 //        System.out.println("=== TEST 1: seller findById ===");
 //        Seller s = sellerDao.findById(8);
 //        System.out.println(s);
+
 //        System.out.println("=== TEST 2: seller delete ===");
+//        sellerDao.delete(1);
+//
+//        System.out.println("=== TEST 3: seller insert ===");
+//
+//        sellerDao.insert(seller);
+//        System.out.println( "The seller " +seller.getName() + " was inserted!");
 
 
-        sellerDao.delete(1);
     }
 }
