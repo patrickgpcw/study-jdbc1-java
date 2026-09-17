@@ -52,6 +52,5 @@ public class Main {
         System.out.println("=== TEST 8: department delete ===");
         departmentDao.delete(department.getId());
 
-
     }
 }
